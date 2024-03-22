@@ -1,0 +1,40 @@
+# This file should go inside the FileBeat installation, or should
+# be passed as a parameter on the command line
+
+filebeat.inputs:
+- type: filestream
+  id: default-filestream
+  paths:
+    - /your/log/files/path/here.log
+
+# Needed only if we run on docker
+#filebeat.autodiscover:
+#  providers:
+#    - type: docker
+#      hints.enabled: true
+
+# Needed for docker only, also there's a cloud provider metadata key
+#processors:
+#- add_docker_metadata: ~
+
+# Not needed as of now, left for future reference
+#setup.kibana:
+  #host: ${KIBANA_HOSTS}
+  #username: ${ELASTIC_USER}
+  #password: ${ELASTIC_PASSWORD}
+
+# We can bypass logstash and send everything directly to ElasticSearch.
+# if no additional parsing of filtering is needed we could do this
+#output.elasticsearch:
+  #hosts: ${ELASTIC_HOSTS}
+  #username: ${ELASTIC_USER}
+  #password: ${ELASTIC_PASSWORD}
+  #ssl.enabled: true
+  #ssl.certificate_authorities: "/Users/andres/Documents/Factored/elastic-test/ca.crt"
+
+output.logstash:
+  hosts: ["logstash_url:logstash_port"]
+  username: elastic_server_username
+  password: elastic_server_password
+  ssl.certificate_authorities: "path_to_ca.crt_file"
+
